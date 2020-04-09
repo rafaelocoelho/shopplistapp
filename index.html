@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="shopping-list" class="container">
+
+        <div class="header">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>{{ (header ? header : 'wellcome').toLocaleUpperCase() }}</h1>
+                </div>
+                <div class="col-sm-6">
+                    <button v-if="state === 'default'" id="open-add-list" class="btn btn-primary" @click="changeState('edit')">Add Item</button>
+                    <button v-else id="cancel-add-list" class="btn btn-danger" @click="changeState('default')">Cancel</buttpn>
+                </div>
+            </div>
+        </div>
+        
+        <div v-if="state === 'edit'" id="add-item-form">
+            <div class="row">
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" v-model="newItem" placeholder="Add an item and press enter">                    
+                    <p class="float-sm-right"><span :class="(newItem.length>200)?'font-red font-bold':''">{{ characterCount }}</span>/200</p>
+                </div>                
+                <div class="col-sm-6">
+                    <button class="offset-sm-1 btn btn-primary" :disabled="characterCount <= 0" @click="saveItem()">Save item</button>
+                </div>
+            </div>
+        </div>
+
+        <h4 v-if="items.length === 0">Nice job! <small>You've bought all your items.</small></h4>
+        
+        <ul id="items-list">
+            <li v-for="item in reverseItems" :class="{strikeout: item.purchased}" @click="togglePurchased(item)"> {{ item.label }}</li>
+        </ul>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+        let shoppingList = new Vue({
+            el: "#shopping-list",
+            data() {
+                return {
+                    state: 'default',
+                    header: 'Shopping List App',
+                    newItem: '',
+                    items: []
+                }
+            },
+            methods: {
+                saveItem: function() {
+
+                    this.items.push({
+                        'label': this.newItem, 
+                        'purchased': this.purchased
+                    });
+
+                    this.newItem = '';
+                },
+                changeState: function(newState) {
+
+                    this.state = newState;
+                    this.newmItem = '';
+                    this.items = [];
+
+                },
+                togglePurchased: function(item) {
+                    item.purchased = !item.purchased;
+                }
+            },
+            computed: {
+                characterCount() {
+                    return (this.newItem.length>200)?-this.newItem.length:this.newItem.length;
+                },
+                reverseItems()
+                {
+                    return this.items.slice(0).reverse();
+                }
+            },
+        })
+    </script>
+</body>
+</html>

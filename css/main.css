@@ -1,0 +1,25 @@
+#shopping-list .header{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.strikeout {
+    text-decoration: line-through;
+    color: red;
+}
+
+#add-item-form {
+    margin-bottom: 20px;
+}
+
+#open-add-list, #cancel-add-list {
+    margin-top: 5px;
+}
+
+.font-red {
+    color: red;
+}
+
+.font-bold {
+    font-weight: bold;
+}
